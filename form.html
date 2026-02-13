@@ -92,24 +92,10 @@
                     </div>
                 </div>
 
-                <!-- 戶籍地址 -->
+                <!-- 聯絡地址 -->
                 <div class="form-group">
-                    <label>戶籍地址 <span class="required">*</span></label>
-                    <div class="address-row">
-                        <select id="addrCity" name="addrCity" required>
-                            <option value="">縣市</option>
-                        </select>
-                        <select id="addrDistrict" name="addrDistrict" required>
-                            <option value="">鄉鎮市區</option>
-                        </select>
-                    </div>
-                    <div class="address-row">
-                        <input type="text" id="addrVillage" name="addrVillage" placeholder="村里（選填）" class="addr-small">
-                        <input type="text" id="addrNeighbor" name="addrNeighbor" placeholder="鄰（選填）" class="addr-small">
-                    </div>
-                    <div class="address-row">
-                        <input type="text" id="addrStreet" name="addrStreet" placeholder="路街/段/巷/弄/號/樓" class="addr-full" required>
-                    </div>
+                    <label for="address">聯絡地址 <span class="required">*</span></label>
+                    <input type="text" id="address" name="address" placeholder="例：台中市西屯區市政路123號" required>
                 </div>
 
                 <div class="form-row">
@@ -168,14 +154,14 @@
                             Facebook
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="source" value="LINE">
+                            <input type="checkbox" name="source" value="IG">
                             <span class="checkbox-custom"></span>
-                            LINE
+                            IG
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="source" value="官網">
+                            <input type="checkbox" name="source" value="診所網站">
                             <span class="checkbox-custom"></span>
-                            官網
+                            診所網站
                         </label>
                         <label class="checkbox-label">
                             <input type="checkbox" name="source" value="親友介紹">

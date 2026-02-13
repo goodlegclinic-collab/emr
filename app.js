@@ -60,33 +60,10 @@ function setTodayDate() {
 }
 
 /**
- * 初始化地址選單
+ * 初始化地址選單（已簡化為文字輸入）
  */
 function initAddressSelects() {
-    const citySelect = document.getElementById('addrCity');
-    const districtSelect = document.getElementById('addrDistrict');
-    
-    // 填入縣市選項
-    if (typeof taiwanAddress !== 'undefined') {
-        for (const city in taiwanAddress) {
-            const option = document.createElement('option');
-            option.value = city;
-            option.textContent = city;
-            citySelect.appendChild(option);
-        }
-        
-        // 縣市改變時更新鄉鎮市區
-        citySelect.addEventListener('change', function() {
-            districtSelect.innerHTML = '<option value="">鄉鎮市區</option>';
-            const districts = taiwanAddress[this.value] || [];
-            districts.forEach(district => {
-                const option = document.createElement('option');
-                option.value = district;
-                option.textContent = district;
-                districtSelect.appendChild(option);
-            });
-        });
-    }
+    // 地址改為直接輸入，不需要初始化
 }
 
 /**
@@ -108,11 +85,7 @@ function collectFormData() {
         idNumber: formData.get('idNumber').toUpperCase(),
         homePhone: formData.get('phoneHome') || '',
         mobilePhone: formData.get('phoneMobile'),
-        city: formData.get('addrCity'),
-        district: formData.get('addrDistrict'),
-        village: formData.get('addrVillage') || '',
-        neighborhood: formData.get('addrNeighbor') || '',
-        address: formData.get('addrStreet'),
+        address: formData.get('address'),
         emergencyContact: formData.get('emergencyContact'),
         relationship: formData.getAll('emergencyRelation').join('、'),
         emergencyPhone: formData.get('emergencyPhone'),
@@ -123,8 +96,8 @@ function collectFormData() {
     // 得知訊息來源
     data.sourceChannels = {
         facebook: formData.getAll('source').includes('FB'),
-        line: formData.getAll('source').includes('LINE'),
-        website: formData.getAll('source').includes('官網'),
+        ig: formData.getAll('source').includes('IG'),
+        website: formData.getAll('source').includes('診所網站'),
         friendRefer: formData.getAll('source').includes('親友介紹'),
         google: formData.getAll('source').includes('Google')
     };
@@ -190,7 +163,7 @@ function showPreview() {
                 <tr><td>身分證字號</td><td>${data.idNumber}</td></tr>
                 <tr><td>手機</td><td>${data.mobilePhone}</td></tr>
                 ${data.homePhone ? `<tr><td>室內電話</td><td>${data.homePhone}</td></tr>` : ''}
-                <tr><td>戶籍地址</td><td>${data.city}${data.district}${data.village}${data.neighborhood}${data.address}</td></tr>
+                <tr><td>聯絡地址</td><td>${data.address}</td></tr>
                 <tr><td>緊急聯絡人</td><td>${data.emergencyContact}（${data.relationship}）</td></tr>
                 <tr><td>緊急聯絡電話</td><td>${data.emergencyPhone}</td></tr>
                 ${data.email ? `<tr><td>電子信箱</td><td>${data.email}</td></tr>` : ''}
