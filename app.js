@@ -217,11 +217,18 @@ async function submitForm() {
         });
         
         // 因為 no-cors，無法讀取回應，假設成功
-        document.getElementById('successModal').classList.add('show');
+        // 顯示成功訊息
+        alert('✅ 送出完成！');
+        
+        // 自動重置表單
+        document.getElementById('patientForm').reset();
+        signaturePad.clear();
+        setTodayDate();
+        window.scrollTo(0, 0);
         
     } catch (error) {
         console.error('Error:', error);
-        alert('儲存失敗，請稍後再試：' + error.message);
+        alert('❌ 儲存失敗，請稍後再試：' + error.message);
     } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
