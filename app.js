@@ -22,26 +22,20 @@ document.addEventListener('DOMContentLoaded', function() {
         signaturePad.clear();
     });
     
-    // 初始化地址選單
-    initAddressSelects();
-    
     // 設定今天日期
     setTodayDate();
-    
-    // 預覽按鈕
-    document.getElementById('previewBtn').addEventListener('click', showPreview);
-    
-    // 關閉預覽
-    document.getElementById('closePreview').addEventListener('click', closePreview);
-    document.getElementById('closePreviewBtn').addEventListener('click', closePreview);
-    
-    // 確認送出（從預覽）
-    document.getElementById('confirmSubmit').addEventListener('click', submitForm);
     
     // 表單送出
     document.getElementById('patientForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        showPreview();
+        
+        // 檢查簽名
+        if (signaturePad.isEmpty()) {
+            alert('請簽名');
+            return;
+        }
+        
+        submitForm();
     });
     
     // 新病人按鈕
@@ -243,9 +237,6 @@ function resetForm() {
     document.getElementById('patientForm').reset();
     signaturePad.clear();
     setTodayDate();
-    
-    // 重設地址選單
-    document.getElementById('addrDistrict').innerHTML = '<option value="">鄉鎮市區</option>';
     
     // 滾動到頂部
     window.scrollTo(0, 0);
