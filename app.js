@@ -4,7 +4,7 @@
  */
 
 // Google Apps Script 網址
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytq1qOTmCTbft_NeSzFPMSzYkbctejgTLmBFgXdiFy0a6xCvtPAwjZ4JddzmDIyyFbkQ/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIlvn6XSBXtKU7kU3dW-mg1ebQFL9Vf8AvJgRCQu5mw9z_jJISHOWVtAQ2wEoyAMILOA/exec';
 
 // 全域變數
 let signaturePad;
