@@ -200,7 +200,7 @@ async function submitForm() {
     const data = collectFormData();
     
     // 顯示載入狀態
-    const submitBtn = document.getElementById('confirmSubmit');
+    const submitBtn = document.getElementById('submitBtn');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = '儲存中...';
     submitBtn.disabled = true;
@@ -217,7 +217,6 @@ async function submitForm() {
         });
         
         // 因為 no-cors，無法讀取回應，假設成功
-        closePreview();
         document.getElementById('successModal').classList.add('show');
         
     } catch (error) {
