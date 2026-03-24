@@ -261,62 +261,41 @@ function createSimplePDF(data) {
   }
   addRow2(t1, '得知本院訊息 Source', sourceText, LABEL_BG, FONT_SIZE);
 
-  // ===== 家族病史 =====
-  const s2 = body.appendParagraph('家族病史 Family Medical History');
+  // ===== 個人病史 =====
+  const s2 = body.appendParagraph('個人病史 Personal Medical History');
   s2.setFontSize(10);
   s2.setBold(true);
   s2.setForegroundColor('#1a5a3e');
   s2.setSpacingBefore(6);
   s2.setSpacingAfter(2);
 
-  const desc = body.appendParagraph('直系血親是否曾罹患以下疾病？ Has any immediate family been diagnosed with the following?');
-  desc.setFontSize(8);
-  desc.setForegroundColor('#666666');
-  desc.setSpacingAfter(2);
-
-  const fh = data.familyHistory || {};
+  const ph = data.personalHistory || data.familyHistory || {};
 
   const t2 = body.appendTable();
-  // 標題列
-  var headerRow = t2.appendTableRow();
-  var h1 = headerRow.appendTableCell('疾病項目 Disease');
+  var headerRow2 = t2.appendTableRow();
+  var h1 = headerRow2.appendTableCell('項目 Item');
   h1.setBackgroundColor(HEADER_BG);
-  h1.setFontSize(FONT_SIZE);
+  h1.setFontSize(9);
   h1.setBold(true);
   h1.setForegroundColor('#ffffff');
-  h1.setPaddingTop(3);
-  h1.setPaddingBottom(3);
+  h1.setPaddingTop(2);
+  h1.setPaddingBottom(2);
   h1.setPaddingLeft(6);
-  var h2 = headerRow.appendTableCell('勾選');
+  var h2 = headerRow2.appendTableCell('是/否 Status');
   h2.setBackgroundColor(HEADER_BG);
-  h2.setFontSize(FONT_SIZE);
+  h2.setFontSize(9);
   h2.setBold(true);
   h2.setForegroundColor('#ffffff');
-  h2.setPaddingTop(3);
-  h2.setPaddingBottom(3);
+  h2.setPaddingTop(2);
+  h2.setPaddingBottom(2);
   h2.setPaddingLeft(6);
-  h2.setWidth(50);
 
-  addHistoryRow(t2, '中風、心肌梗塞等心血管疾病 Cardiovascular', fh.cardiovascular, FONT_SIZE);
-  addHistoryRow(t2, '高血壓、糖尿病、高血脂等代謝疾病 Metabolic', fh.metabolic, FONT_SIZE);
-  addHistoryRow(t2, '癌症等惡性疾病 Cancer', fh.cancer, FONT_SIZE);
-  addHistoryRow(t2, '其他（自體免疫疾病、重大傷病等）Other', fh.other, FONT_SIZE);
-
-  if (data.familyHistoryOther) {
-    var otherRow = t2.appendTableRow();
-    var otherLabel = otherRow.appendTableCell('說明 Details');
-    otherLabel.setBackgroundColor(LABEL_BG);
-    otherLabel.setFontSize(FONT_SIZE);
-    otherLabel.setBold(true);
-    otherLabel.setPaddingTop(6);
-    otherLabel.setPaddingBottom(6);
-    otherLabel.setPaddingLeft(6);
-    var otherVal = otherRow.appendTableCell(data.familyHistoryOther);
-    otherVal.setFontSize(FONT_SIZE);
-    otherVal.setPaddingTop(6);
-    otherVal.setPaddingBottom(6);
-    otherVal.setPaddingLeft(6);
-  }
+  addHistoryRow2(t2, '心血管疾病 Cardiovascular', ph.cardiovascular, '', 9);
+  addHistoryRow2(t2, '代謝疾病 Metabolic', ph.metabolic, '', 9);
+  addHistoryRow2(t2, '惡性疾病 Cancer', ph.cancer, ph.cancerDetail || '', 9);
+  addHistoryRow2(t2, '曾接受手術 Surgery', ph.surgery, ph.surgeryDetail || '', 9);
+  addHistoryRow2(t2, '藥物過敏 Drug allergy', ph.drugAllergy, ph.drugAllergyDetail || '', 9);
+  addHistoryRow2(t2, '其他 Other', ph.other, ph.otherDetail || '', 9);
 
   // ===== 簽名 =====
   const s3 = body.appendParagraph('病人簽名 Patient Signature');
@@ -375,24 +354,23 @@ function addRow2(table, label, value, labelBg, fontSize) {
 /**
  * 新增家族病史列
  */
-function addHistoryRow(table, label, checked, fontSize) {
+function addHistoryRow2(table, label, isYes, detail, fontSize) {
   var row = table.appendTableRow();
   var c1 = row.appendTableCell(label);
   c1.setFontSize(fontSize);
   c1.setForegroundColor('#333333');
-  c1.setPaddingTop(3);
-  c1.setPaddingBottom(3);
+  c1.setPaddingTop(2);
+  c1.setPaddingBottom(2);
   c1.setPaddingLeft(6);
-  var c2 = row.appendTableCell(checked ? '☑' : '☐');
-  c2.setFontSize(12);
-  c2.setForegroundColor(checked ? '#1a5a3e' : '#999999');
-  c2.setPaddingTop(3);
-  c2.setPaddingBottom(3);
+  var answerText = isYes ? '是 Yes' : '否 No';
+  if (isYes && detail) answerText += '（' + detail + '）';
+  var c2 = row.appendTableCell(answerText);
+  c2.setFontSize(fontSize);
+  c2.setForegroundColor(isYes ? '#c0392b' : '#333333');
+  c2.setPaddingTop(2);
+  c2.setPaddingBottom(2);
   c2.setPaddingLeft(6);
-  if (checked) {
-    c2.setForegroundColor('#1a5a3e');
-    c2.setBold(true);
-  }
+  if (isYes) c2.setBold(true);
   return row;
 }
 

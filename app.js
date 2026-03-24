@@ -100,15 +100,19 @@ function collectFormData() {
         google: formData.getAll('source').includes('Google')
     };
     
-    // 家族病史
-    const familyHistoryValues = formData.getAll('familyHistory');
-    data.familyHistory = {
-        cardiovascular: familyHistoryValues.includes('心血管疾病'),
-        metabolic: familyHistoryValues.includes('代謝疾病'),
-        cancer: familyHistoryValues.includes('癌症'),
-        other: familyHistoryValues.includes('其他')
+    // 個人病史
+    data.personalHistory = {
+        cardiovascular: formData.get('ph_cardiovascular') === '是',
+        metabolic: formData.get('ph_metabolic') === '是',
+        cancer: formData.get('ph_cancer') === '是',
+        cancerDetail: formData.get('ph_cancer_detail') || '',
+        surgery: formData.get('ph_surgery') === '是',
+        surgeryDetail: formData.get('ph_surgery_detail') || '',
+        drugAllergy: formData.get('ph_allergy') === '是',
+        drugAllergyDetail: formData.get('ph_allergy_detail') || '',
+        other: formData.get('ph_other') === '是',
+        otherDetail: formData.get('ph_other_detail') || ''
     };
-    data.familyHistoryOther = formData.get('familyHistoryOther') || '';
     
     // 簽名
     if (!signaturePad.isEmpty()) {
@@ -169,15 +173,15 @@ function showPreview() {
         </div>
 
         <div class="preview-section">
-            <h3>家族病史 Family Medical History</h3>
+            <h3>個人病史 Personal Medical History</h3>
             <ul class="preview-list">
-                ${data.familyHistory.cardiovascular ? '<li>✓ 中風、心肌梗塞等心血管疾病 Cardiovascular</li>' : ''}
-                ${data.familyHistory.metabolic ? '<li>✓ 高血壓、糖尿病、高血脂等代謝疾病 Metabolic</li>' : ''}
-                ${data.familyHistory.cancer ? '<li>✓ 癌症等惡性疾病 Cancer</li>' : ''}
-                ${data.familyHistory.other ? '<li>✓ 其他（自體免疫疾病、重大傷病等）Other</li>' : ''}
-                ${!data.familyHistory.cardiovascular && !data.familyHistory.metabolic && !data.familyHistory.cancer && !data.familyHistory.other ? '<li>無 None</li>' : ''}
+                <li>心血管疾病：${data.personalHistory.cardiovascular ? '是' : '否'}</li>
+                <li>代謝疾病：${data.personalHistory.metabolic ? '是' : '否'}</li>
+                <li>惡性疾病：${data.personalHistory.cancer ? '是' : '否'}${data.personalHistory.cancerDetail ? '（' + data.personalHistory.cancerDetail + '）' : ''}</li>
+                <li>曾接受手術：${data.personalHistory.surgery ? '是' : '否'}${data.personalHistory.surgeryDetail ? '（' + data.personalHistory.surgeryDetail + '）' : ''}</li>
+                <li>藥物過敏：${data.personalHistory.drugAllergy ? '是' : '否'}${data.personalHistory.drugAllergyDetail ? '（' + data.personalHistory.drugAllergyDetail + '）' : ''}</li>
+                <li>其他：${data.personalHistory.other ? '是' : '否'}${data.personalHistory.otherDetail ? '（' + data.personalHistory.otherDetail + '）' : ''}</li>
             </ul>
-            ${data.familyHistoryOther ? `<p>說明 Details：${data.familyHistoryOther}</p>` : ''}
         </div>
 
         <div class="preview-section">

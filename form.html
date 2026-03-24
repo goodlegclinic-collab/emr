@@ -182,35 +182,62 @@
                 </div>
             </section>
 
-            <!-- 家族病史區 -->
+            <!-- 個人病史區 -->
             <section class="section">
-                <h2>家族病史<span class="en">Family Medical History</span></h2>
-                <p class="section-desc">請問您的直系血親中，是否曾罹患以下疾病？（可複選）<br><span class="en">Has any of your immediate family been diagnosed with the following? (Select all that apply)</span></p>
+                <h2>個人病史<span class="en">Personal Medical History</span></h2>
 
-                <div class="checkbox-group vertical family-history">
-                    <label class="checkbox-label large">
-                        <input type="checkbox" name="familyHistory" value="心血管疾病">
-                        <span class="checkbox-custom"></span>
-                        <span>中風、心肌梗塞等<strong>心血管疾病</strong><span class="en">Stroke, heart attack, or other cardiovascular diseases</span></span>
-                    </label>
-                    <label class="checkbox-label large">
-                        <input type="checkbox" name="familyHistory" value="代謝疾病">
-                        <span class="checkbox-custom"></span>
-                        <span>高血壓、糖尿病、高血脂等<strong>代謝疾病</strong><span class="en">Hypertension, diabetes, hyperlipidemia, or other metabolic diseases</span></span>
-                    </label>
-                    <label class="checkbox-label large">
-                        <input type="checkbox" name="familyHistory" value="癌症">
-                        <span class="checkbox-custom"></span>
-                        <span>癌症等<strong>惡性疾病</strong><span class="en">Cancer or other malignant diseases</span></span>
-                    </label>
-                    <label class="checkbox-label large">
-                        <input type="checkbox" name="familyHistory" value="其他">
-                        <span class="checkbox-custom"></span>
-                        <span>其他（自體免疫疾病、重大傷病等）<span class="en">Other (autoimmune diseases, major injuries, etc.)</span></span>
-                    </label>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <input type="text" id="familyHistoryOther" name="familyHistoryOther" placeholder="其他說明（選填）Other details (optional)">
+                <div class="history-items">
+                    <div class="history-item">
+                        <label class="history-label">心血管疾病<span class="en">Cardiovascular diseases</span></label>
+                        <div class="history-options">
+                            <label class="radio-label"><input type="radio" name="ph_cardiovascular" value="否" checked><span class="radio-custom"></span>否 <span class="en">No</span></label>
+                            <label class="radio-label"><input type="radio" name="ph_cardiovascular" value="是"><span class="radio-custom"></span>是 <span class="en">Yes</span></label>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <label class="history-label">代謝疾病（高血壓、糖尿病等）<span class="en">Metabolic diseases</span></label>
+                        <div class="history-options">
+                            <label class="radio-label"><input type="radio" name="ph_metabolic" value="否" checked><span class="radio-custom"></span>否 <span class="en">No</span></label>
+                            <label class="radio-label"><input type="radio" name="ph_metabolic" value="是"><span class="radio-custom"></span>是 <span class="en">Yes</span></label>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <label class="history-label">惡性疾病（癌症等）<span class="en">Cancer</span></label>
+                        <div class="history-options">
+                            <label class="radio-label"><input type="radio" name="ph_cancer" value="否" checked><span class="radio-custom"></span>否 <span class="en">No</span></label>
+                            <label class="radio-label"><input type="radio" name="ph_cancer" value="是"><span class="radio-custom"></span>是 <span class="en">Yes</span></label>
+                            <input type="text" name="ph_cancer_detail" class="history-detail" placeholder="何種癌症 Type of cancer">
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <label class="history-label">曾接受手術<span class="en">Previous surgery</span></label>
+                        <div class="history-options">
+                            <label class="radio-label"><input type="radio" name="ph_surgery" value="否" checked><span class="radio-custom"></span>否 <span class="en">No</span></label>
+                            <label class="radio-label"><input type="radio" name="ph_surgery" value="是"><span class="radio-custom"></span>是 <span class="en">Yes</span></label>
+                            <input type="text" name="ph_surgery_detail" class="history-detail" placeholder="何種手術 Type of surgery">
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <label class="history-label">藥物過敏<span class="en">Drug allergy</span></label>
+                        <div class="history-options">
+                            <label class="radio-label"><input type="radio" name="ph_allergy" value="否" checked><span class="radio-custom"></span>否 <span class="en">No</span></label>
+                            <label class="radio-label"><input type="radio" name="ph_allergy" value="是"><span class="radio-custom"></span>是 <span class="en">Yes</span></label>
+                            <input type="text" name="ph_allergy_detail" class="history-detail" placeholder="何種藥物 Drug name">
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <label class="history-label">其他<span class="en">Other</span></label>
+                        <div class="history-options">
+                            <label class="radio-label"><input type="radio" name="ph_other" value="否" checked><span class="radio-custom"></span>否 <span class="en">No</span></label>
+                            <label class="radio-label"><input type="radio" name="ph_other" value="是"><span class="radio-custom"></span>是 <span class="en">Yes</span></label>
+                            <input type="text" name="ph_other_detail" class="history-detail" placeholder="請說明 Details">
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -254,6 +281,11 @@
                 <div class="success-icon">✓</div>
                 <h2>資料已儲存<br><small style="font-size:0.55em;color:#6aab8e;font-weight:400;">Data Saved Successfully</small></h2>
                 <p>初診資料已成功建立<br><span style="font-size:0.85em;color:#999;">Registration completed</span></p>
+                <a href="https://page.line.me/273kmdwn?oat_content=url&openQrModal=true" target="_blank" class="btn btn-line" style="display:inline-flex;align-items:center;gap:8px;background:#06C755;color:white;text-decoration:none;padding:14px 30px;border-radius:12px;font-size:1.1rem;font-weight:600;margin-bottom:12px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 5.73 2 10.25c0 4.07 3.61 7.49 8.48 8.14.33.07.78.22.89.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55.54-.23 2.92-1.72 3.99-2.95C18.85 15.93 22 13.33 22 10.25 22 5.73 17.52 2 12 2z"/></svg>
+                    加入官方LINE<span class="en" style="color:rgba(255,255,255,0.8);">Add LINE</span>
+                </a>
+                <br>
                 <button type="button" class="btn btn-primary" id="newPatient">填寫下一位<span class="en">Next Patient</span></button>
             </div>
         </div>
