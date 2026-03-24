@@ -6,6 +6,10 @@
 // Google Apps Script 網址
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTdv5lVPIfUi-9Du8k-sK8_YXeKJJTbiPoCHS2Z-WcV6f4E1tWim-0abmVu2tgFkfxGA/exec';
 
+// ConvertKit (Kit) 電子報訂閱
+const KIT_FORM_ID = '8736032';
+const KIT_API_SECRET = 'jCtH74KLLlWw7nMjmLQnFTB-FBNVKJAcO7mI6EeXcgA';
+
 // 全域變數
 let signaturePad;
 
@@ -31,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 檢查簽名
         if (signaturePad.isEmpty()) {
-            alert('請簽名');
+            alert('請簽名 Please sign');
             return;
         }
         
@@ -149,36 +153,36 @@ function showPreview() {
     const previewContent = document.getElementById('previewContent');
     previewContent.innerHTML = `
         <div class="preview-section">
-            <h3>基本資料</h3>
+            <h3>基本資料 Basic Information</h3>
             <table class="preview-table">
-                <tr><td>姓名</td><td>${data.name}</td></tr>
-                <tr><td>性別</td><td>${data.gender}</td></tr>
-                <tr><td>出生日期</td><td>民國 ${data.birthYear} 年 ${data.birthMonth} 月 ${data.birthDay} 日</td></tr>
-                <tr><td>身分證字號</td><td>${data.idNumber}</td></tr>
-                <tr><td>手機</td><td>${data.mobilePhone}</td></tr>
-                ${data.homePhone ? `<tr><td>室內電話</td><td>${data.homePhone}</td></tr>` : ''}
-                <tr><td>聯絡地址</td><td>${data.address}</td></tr>
-                <tr><td>緊急聯絡人</td><td>${data.emergencyContact}（${data.relationship}）</td></tr>
-                <tr><td>緊急聯絡電話</td><td>${data.emergencyPhone}</td></tr>
-                ${data.email ? `<tr><td>電子信箱</td><td>${data.email}</td></tr>` : ''}
+                <tr><td>姓名 Name</td><td>${data.name}</td></tr>
+                <tr><td>性別 Gender</td><td>${data.gender}</td></tr>
+                <tr><td>出生日期 DOB</td><td>民國 ${data.birthYear} 年 ${data.birthMonth} 月 ${data.birthDay} 日</td></tr>
+                <tr><td>身分證字號 ID</td><td>${data.idNumber}</td></tr>
+                <tr><td>手機 Mobile</td><td>${data.mobilePhone}</td></tr>
+                ${data.homePhone ? `<tr><td>室內電話 Home</td><td>${data.homePhone}</td></tr>` : ''}
+                <tr><td>聯絡地址 Address</td><td>${data.address}</td></tr>
+                <tr><td>緊急聯絡人 Emergency</td><td>${data.emergencyContact}（${data.relationship}）</td></tr>
+                <tr><td>緊急聯絡電話 Phone</td><td>${data.emergencyPhone}</td></tr>
+                ${data.email ? `<tr><td>電子信箱 Email</td><td>${data.email}</td></tr>` : ''}
             </table>
         </div>
-        
+
         <div class="preview-section">
-            <h3>家族病史</h3>
+            <h3>家族病史 Family Medical History</h3>
             <ul class="preview-list">
-                ${data.familyHistory.cardiovascular ? '<li>✓ 中風、心肌梗塞等心血管疾病</li>' : ''}
-                ${data.familyHistory.metabolic ? '<li>✓ 高血壓、糖尿病、高血脂等代謝疾病</li>' : ''}
-                ${data.familyHistory.cancer ? '<li>✓ 癌症等惡性疾病</li>' : ''}
-                ${data.familyHistory.other ? '<li>✓ 其他（自體免疫疾病、重大傷病等）</li>' : ''}
-                ${!data.familyHistory.cardiovascular && !data.familyHistory.metabolic && !data.familyHistory.cancer && !data.familyHistory.other ? '<li>無</li>' : ''}
+                ${data.familyHistory.cardiovascular ? '<li>✓ 中風、心肌梗塞等心血管疾病 Cardiovascular</li>' : ''}
+                ${data.familyHistory.metabolic ? '<li>✓ 高血壓、糖尿病、高血脂等代謝疾病 Metabolic</li>' : ''}
+                ${data.familyHistory.cancer ? '<li>✓ 癌症等惡性疾病 Cancer</li>' : ''}
+                ${data.familyHistory.other ? '<li>✓ 其他（自體免疫疾病、重大傷病等）Other</li>' : ''}
+                ${!data.familyHistory.cardiovascular && !data.familyHistory.metabolic && !data.familyHistory.cancer && !data.familyHistory.other ? '<li>無 None</li>' : ''}
             </ul>
-            ${data.familyHistoryOther ? `<p>說明：${data.familyHistoryOther}</p>` : ''}
+            ${data.familyHistoryOther ? `<p>說明 Details：${data.familyHistoryOther}</p>` : ''}
         </div>
-        
+
         <div class="preview-section">
-            <h3>病人簽名</h3>
-            <img src="${data.signature}" alt="簽名" style="max-width: 300px; border: 1px solid #ccc;">
+            <h3>病人簽名 Patient Signature</h3>
+            <img src="${data.signature}" alt="簽名 Signature" style="max-width: 300px; border: 1px solid #ccc;">
         </div>
     `;
     
@@ -202,7 +206,7 @@ async function submitForm() {
     // 顯示載入狀態
     const submitBtn = document.getElementById('submitBtn');
     const originalText = submitBtn.textContent;
-    submitBtn.textContent = '儲存中...';
+    submitBtn.textContent = '儲存中... Saving...';
     submitBtn.disabled = true;
     
     try {
@@ -217,18 +221,19 @@ async function submitForm() {
         });
         
         // 因為 no-cors，無法讀取回應，假設成功
-        // 顯示成功訊息
-        alert('✅ 送出完成！');
-        
-        // 自動重置表單
-        document.getElementById('patientForm').reset();
-        signaturePad.clear();
-        setTodayDate();
+
+        // 如果有填 email，自動訂閱電子報
+        if (data.email) {
+            subscribeToNewsletter(data.email, data.name);
+        }
+
+        // 顯示成功畫面
+        document.getElementById('successModal').classList.add('active');
         window.scrollTo(0, 0);
         
     } catch (error) {
         console.error('Error:', error);
-        alert('❌ 儲存失敗，請稍後再試：' + error.message);
+        alert('❌ 儲存失敗，請稍後再試 Save failed, please try again: ' + error.message);
     } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
@@ -239,11 +244,32 @@ async function submitForm() {
  * 重設表單
  */
 function resetForm() {
-    document.getElementById('successModal').classList.remove('show');
+    document.getElementById('successModal').classList.remove('active');
     document.getElementById('patientForm').reset();
     signaturePad.clear();
     setTodayDate();
     
     // 滾動到頂部
     window.scrollTo(0, 0);
+}
+
+/**
+ * 訂閱 Kit (ConvertKit) 電子報
+ */
+async function subscribeToNewsletter(email, name) {
+    try {
+        await fetch(`https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                api_secret: KIT_API_SECRET,
+                email: email,
+                first_name: name || ''
+            })
+        });
+        console.log('Newsletter subscribed:', email);
+    } catch (error) {
+        // 訂閱失敗不影響主流程
+        console.error('Newsletter subscribe error:', error);
+    }
 }

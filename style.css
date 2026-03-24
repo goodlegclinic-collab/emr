@@ -455,30 +455,46 @@ select {
 /* Success Modal */
 .success-modal {
     text-align: center;
-    padding: 50px 30px;
+    padding: 60px 40px;
+    max-width: 500px;
 }
 
 .success-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background: linear-gradient(135deg, #2d8a5e 0%, #1a5a3e 100%);
     color: white;
-    font-size: 3rem;
+    font-size: 3.5rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
+    margin: 0 auto 25px;
+    box-shadow: 0 8px 30px rgba(45, 138, 94, 0.4);
+    animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 .success-modal h2 {
     color: #1a5a3e;
-    margin: 0 0 10px 0;
+    font-size: 1.8rem;
+    margin: 0 0 15px 0;
 }
 
 .success-modal p {
     color: #666;
-    margin: 0 0 30px 0;
+    font-size: 1.1rem;
+    margin: 0 0 35px 0;
+}
+
+.success-modal .btn-primary {
+    font-size: 1.2rem;
+    padding: 18px 50px;
 }
 
 /* iPad Specific */
@@ -531,6 +547,51 @@ select {
     .btn {
         width: 100%;
     }
+}
+
+/* English subtitle */
+.en {
+    display: block;
+    font-size: 0.75em;
+    color: #999;
+    font-weight: 400;
+    margin-top: 2px;
+}
+
+.header .en {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.55em;
+}
+
+.section h2 .en {
+    font-size: 0.6em;
+    display: block;
+    font-weight: 400;
+    color: #6aab8e;
+}
+
+.radio-label .en,
+.checkbox-label .en {
+    display: inline;
+    margin-left: 4px;
+}
+
+.checkbox-label.large .en {
+    display: block;
+    margin-left: 34px;
+    margin-top: 2px;
+}
+
+.section-desc .en {
+    font-size: 0.85em;
+    color: #999;
+}
+
+.btn .en {
+    display: block;
+    font-size: 0.7em;
+    font-weight: 400;
+    margin-top: 2px;
 }
 
 /* 禁止選取（避免誤觸） */

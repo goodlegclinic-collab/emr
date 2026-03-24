@@ -18,42 +18,42 @@
     <div class="container">
         <header class="header">
             <img src="富足LOGO.png" alt="富足診所" class="logo">
-            <h1>初診基本資料表</h1>
+            <h1>初診基本資料表<span class="en">New Patient Registration Form</span></h1>
         </header>
 
         <form id="patientForm" class="form">
             <!-- 基本資料區 -->
             <section class="section">
-                <h2>基本資料</h2>
-                
+                <h2>基本資料<span class="en">Basic Information</span></h2>
+
                 <div class="form-row">
                     <div class="form-group flex-1">
-                        <label for="medicalRecordNo">病歷號碼</label>
-                        <input type="text" id="medicalRecordNo" name="medicalRecordNo" placeholder="由診所填寫">
+                        <label for="medicalRecordNo">病歷號碼 <span class="required">*</span><span class="en">Medical Record No.</span></label>
+                        <input type="text" id="medicalRecordNo" name="medicalRecordNo" placeholder="由診所填寫 Filled by clinic" required>
                     </div>
                     <div class="form-group flex-1">
-                        <label for="fillDate">填表日期</label>
+                        <label for="fillDate">填表日期<span class="en">Date</span></label>
                         <input type="date" id="fillDate" name="fillDate">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group flex-2">
-                        <label for="name">姓名 <span class="required">*</span></label>
+                        <label for="name">姓名 <span class="required">*</span><span class="en">Full Name</span></label>
                         <input type="text" id="name" name="name" required>
                     </div>
                     <div class="form-group flex-1">
-                        <label>性別 <span class="required">*</span></label>
+                        <label>性別 <span class="required">*</span><span class="en">Gender</span></label>
                         <div class="radio-group">
                             <label class="radio-label">
                                 <input type="radio" name="gender" value="male" required>
                                 <span class="radio-custom"></span>
-                                男
+                                男 <span class="en">Male</span>
                             </label>
                             <label class="radio-label">
                                 <input type="radio" name="gender" value="female">
                                 <span class="radio-custom"></span>
-                                女
+                                女 <span class="en">Female</span>
                             </label>
                         </div>
                     </div>
@@ -61,92 +61,92 @@
 
                 <div class="form-row">
                     <div class="form-group flex-1">
-                        <label for="birthYear">出生日期（民國） <span class="required">*</span></label>
+                        <label for="birthYear">出生日期（民國） <span class="required">*</span><span class="en">Date of Birth (ROC Calendar)</span></label>
                         <div class="date-inputs">
                             <input type="number" id="birthYear" name="birthYear" placeholder="年" min="1" max="200" required>
-                            <span>年</span>
+                            <span>年 Y</span>
                             <input type="number" id="birthMonth" name="birthMonth" placeholder="月" min="1" max="12" required>
-                            <span>月</span>
+                            <span>月 M</span>
                             <input type="number" id="birthDay" name="birthDay" placeholder="日" min="1" max="31" required>
-                            <span>日</span>
+                            <span>日 D</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group flex-1">
-                        <label for="idNumber">身分證字號 <span class="required">*</span></label>
+                        <label for="idNumber">身分證字號 <span class="required">*</span><span class="en">ID Number</span></label>
                         <input type="text" id="idNumber" name="idNumber" maxlength="10"
-                               placeholder="例：A123456789" required style="text-transform: uppercase;">
+                               placeholder="例 e.g. A123456789" required style="text-transform: uppercase;">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group flex-1">
-                        <label for="phoneHome">聯絡電話（宅）</label>
-                        <input type="tel" id="phoneHome" name="phoneHome" placeholder="選填">
+                        <label for="phoneHome">聯絡電話（宅）<span class="en">Home Phone</span></label>
+                        <input type="tel" id="phoneHome" name="phoneHome" placeholder="選填 Optional">
                     </div>
                     <div class="form-group flex-1">
-                        <label for="phoneMobile">手機 <span class="required">*</span></label>
+                        <label for="phoneMobile">手機 <span class="required">*</span><span class="en">Mobile Phone</span></label>
                         <input type="tel" id="phoneMobile" name="phoneMobile" placeholder="09xxxxxxxx" required>
                     </div>
                 </div>
 
                 <!-- 聯絡地址 -->
                 <div class="form-group">
-                    <label for="address">聯絡地址 <span class="required">*</span></label>
-                    <input type="text" id="address" name="address" placeholder="例：台中市西屯區市政路123號" required>
+                    <label for="address">聯絡地址 <span class="required">*</span><span class="en">Address</span></label>
+                    <input type="text" id="address" name="address" placeholder="例 e.g. 台中市西屯區市政路123號" required>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group flex-1">
-                        <label for="emergencyContact">緊急聯絡人 <span class="required">*</span></label>
+                        <label for="emergencyContact">緊急聯絡人 <span class="required">*</span><span class="en">Emergency Contact</span></label>
                         <input type="text" id="emergencyContact" name="emergencyContact" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>與病患關係 <span class="required">*</span></label>
+                    <label>與病患關係 <span class="required">*</span><span class="en">Relationship to Patient</span></label>
                     <div class="checkbox-group horizontal">
                         <label class="checkbox-label">
                             <input type="checkbox" name="emergencyRelation" value="父母">
                             <span class="checkbox-custom"></span>
-                            父母
+                            父母 <span class="en">Parent</span>
                         </label>
                         <label class="checkbox-label">
                             <input type="checkbox" name="emergencyRelation" value="子女">
                             <span class="checkbox-custom"></span>
-                            子女
+                            子女 <span class="en">Child</span>
                         </label>
                         <label class="checkbox-label">
                             <input type="checkbox" name="emergencyRelation" value="夫妻">
                             <span class="checkbox-custom"></span>
-                            夫妻
+                            夫妻 <span class="en">Spouse</span>
                         </label>
                         <label class="checkbox-label">
                             <input type="checkbox" name="emergencyRelation" value="其他親戚或朋友">
                             <span class="checkbox-custom"></span>
-                            其他親戚或朋友
+                            其他親戚或朋友 <span class="en">Other</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group flex-1">
-                        <label for="emergencyPhone">緊急聯絡人電話 <span class="required">*</span></label>
+                        <label for="emergencyPhone">緊急聯絡人電話 <span class="required">*</span><span class="en">Emergency Contact Phone</span></label>
                         <input type="tel" id="emergencyPhone" name="emergencyPhone" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group flex-1">
-                        <label for="email">電子信箱</label>
-                        <input type="email" id="email" name="email" placeholder="選填">
+                        <label for="email">電子信箱<span class="en">Email</span></label>
+                        <input type="email" id="email" name="email" placeholder="選填 Optional">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>您從何處得知本院訊息？</label>
+                    <label>您從何處得知本院訊息？<span class="en">How did you hear about us?</span></label>
                     <div class="checkbox-group horizontal">
                         <label class="checkbox-label">
                             <input type="checkbox" name="source" value="FB">
@@ -161,22 +161,22 @@
                         <label class="checkbox-label">
                             <input type="checkbox" name="source" value="診所網站">
                             <span class="checkbox-custom"></span>
-                            診所網站
+                            診所網站 <span class="en">Website</span>
                         </label>
                         <label class="checkbox-label">
                             <input type="checkbox" name="source" value="親友介紹">
                             <span class="checkbox-custom"></span>
-                            親友介紹
+                            親友介紹 <span class="en">Referral</span>
                         </label>
                         <label class="checkbox-label">
                             <input type="checkbox" name="source" value="Google">
                             <span class="checkbox-custom"></span>
-                            Google搜尋
+                            Google搜尋 <span class="en">Search</span>
                         </label>
                     </div>
                     <div class="form-row" style="margin-top: 10px;">
                         <div class="form-group flex-1">
-                            <input type="text" id="referrer" name="referrer" placeholder="介紹人姓名（若有）">
+                            <input type="text" id="referrer" name="referrer" placeholder="介紹人姓名（若有）Referrer name (if any)">
                         </div>
                     </div>
                 </div>
@@ -184,50 +184,50 @@
 
             <!-- 家族病史區 -->
             <section class="section">
-                <h2>家族病史</h2>
-                <p class="section-desc">請問您的直系血親中，是否曾罹患以下疾病？（可複選）</p>
-                
+                <h2>家族病史<span class="en">Family Medical History</span></h2>
+                <p class="section-desc">請問您的直系血親中，是否曾罹患以下疾病？（可複選）<br><span class="en">Has any of your immediate family been diagnosed with the following? (Select all that apply)</span></p>
+
                 <div class="checkbox-group vertical family-history">
                     <label class="checkbox-label large">
                         <input type="checkbox" name="familyHistory" value="心血管疾病">
                         <span class="checkbox-custom"></span>
-                        中風、心肌梗塞等<strong>心血管疾病</strong>
+                        <span>中風、心肌梗塞等<strong>心血管疾病</strong><span class="en">Stroke, heart attack, or other cardiovascular diseases</span></span>
                     </label>
                     <label class="checkbox-label large">
                         <input type="checkbox" name="familyHistory" value="代謝疾病">
                         <span class="checkbox-custom"></span>
-                        高血壓、糖尿病、高血脂等<strong>代謝疾病</strong>
+                        <span>高血壓、糖尿病、高血脂等<strong>代謝疾病</strong><span class="en">Hypertension, diabetes, hyperlipidemia, or other metabolic diseases</span></span>
                     </label>
                     <label class="checkbox-label large">
                         <input type="checkbox" name="familyHistory" value="癌症">
                         <span class="checkbox-custom"></span>
-                        癌症等<strong>惡性疾病</strong>
+                        <span>癌症等<strong>惡性疾病</strong><span class="en">Cancer or other malignant diseases</span></span>
                     </label>
                     <label class="checkbox-label large">
                         <input type="checkbox" name="familyHistory" value="其他">
                         <span class="checkbox-custom"></span>
-                        其他（自體免疫疾病、重大傷病等）
+                        <span>其他（自體免疫疾病、重大傷病等）<span class="en">Other (autoimmune diseases, major injuries, etc.)</span></span>
                     </label>
                 </div>
                 <div class="form-group" style="margin-top: 15px;">
-                    <input type="text" id="familyHistoryOther" name="familyHistoryOther" placeholder="其他說明（選填）">
+                    <input type="text" id="familyHistoryOther" name="familyHistoryOther" placeholder="其他說明（選填）Other details (optional)">
                 </div>
             </section>
 
             <!-- 簽名區 -->
             <section class="section signature-section">
-                <h2>病人簽名</h2>
-                <p class="section-desc">請在下方框內簽名</p>
-                
+                <h2>病人簽名<span class="en">Patient Signature</span></h2>
+                <p class="section-desc">請在下方框內簽名<br><span class="en">Please sign in the box below</span></p>
+
                 <div class="signature-container">
                     <canvas id="signatureCanvas"></canvas>
-                    <button type="button" id="clearSignature" class="btn btn-secondary">清除簽名</button>
+                    <button type="button" id="clearSignature" class="btn btn-secondary">清除簽名 Clear</button>
                 </div>
             </section>
 
             <!-- 提交按鈕 -->
             <div class="form-actions">
-                <button type="submit" id="submitBtn" class="btn btn-primary">確認送出</button>
+                <button type="submit" id="submitBtn" class="btn btn-primary">確認送出<span class="en">Submit</span></button>
             </div>
         </form>
 
@@ -235,15 +235,15 @@
         <div id="previewModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>預覽初診資料</h2>
+                    <h2>預覽初診資料<br><small style="font-size:0.6em;color:#6aab8e;font-weight:400;">Preview Registration Data</small></h2>
                     <button type="button" class="modal-close" id="closePreview">&times;</button>
                 </div>
                 <div class="modal-body" id="previewContent">
                     <!-- 預覽內容由 JS 填入 -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="closePreviewBtn">返回修改</button>
-                    <button type="button" class="btn btn-primary" id="confirmSubmit">確認送出</button>
+                    <button type="button" class="btn btn-secondary" id="closePreviewBtn">返回修改 Edit</button>
+                    <button type="button" class="btn btn-primary" id="confirmSubmit">確認送出 Submit</button>
                 </div>
             </div>
         </div>
@@ -252,9 +252,9 @@
         <div id="successModal" class="modal">
             <div class="modal-content success-modal">
                 <div class="success-icon">✓</div>
-                <h2>資料已儲存</h2>
-                <p>初診資料已成功建立</p>
-                <button type="button" class="btn btn-primary" id="newPatient">填寫下一位</button>
+                <h2>資料已儲存<br><small style="font-size:0.55em;color:#6aab8e;font-weight:400;">Data Saved Successfully</small></h2>
+                <p>初診資料已成功建立<br><span style="font-size:0.85em;color:#999;">Registration completed</span></p>
+                <button type="button" class="btn btn-primary" id="newPatient">填寫下一位<span class="en">Next Patient</span></button>
             </div>
         </div>
     </div>
