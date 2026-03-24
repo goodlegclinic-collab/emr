@@ -208,10 +208,10 @@ function createSimplePDF(data) {
   // 4欄表格：基本資料
   const t1 = body.appendTable();
 
-  addTableRow4(t1, '病歷號碼\nMedical Record No.', data.medicalRecordNumber || '', '填表日期\nDate', data.fillDate || '', LABEL_BG, FONT_SIZE);
+  addTableRow4(t1, '病歷號碼\nRecord No.', data.medicalRecordNumber || '', '填表日期\nDate', data.fillDate || '', LABEL_BG, FONT_SIZE);
   addTableRow4(t1, '姓名\nName', data.name || '', '性別\nGender', genderText, LABEL_BG, FONT_SIZE);
-  addTableRow4(t1, '出生日期\nDate of Birth', '民國 ' + (data.birthYear || '') + ' 年 ' + (data.birthMonth || '') + ' 月 ' + (data.birthDay || '') + ' 日', '身分證字號\nID Number', data.idNumber || '', LABEL_BG, FONT_SIZE);
-  addTableRow4(t1, '聯絡電話（宅）\nHome Phone', data.homePhone || '無 N/A', '手機\nMobile', data.mobilePhone || '', LABEL_BG, FONT_SIZE);
+  addTableRow4(t1, '出生日期\nDOB', '民國 ' + (data.birthYear || '') + ' 年 ' + (data.birthMonth || '') + ' 月 ' + (data.birthDay || '') + ' 日', '身分證字號\nID No.', data.idNumber || '', LABEL_BG, FONT_SIZE);
+  addTableRow4(t1, '電話（宅）\nHome', data.homePhone || '無 N/A', '手機\nMobile', data.mobilePhone || '', LABEL_BG, FONT_SIZE);
 
   // 地址：跨3欄
   var row = t1.appendTableRow();
@@ -225,8 +225,8 @@ function createSimplePDF(data) {
   row.appendTableCell('').setWidth(0);
   row.appendTableCell('').setWidth(0);
 
-  addTableRow4(t1, '緊急聯絡人\nEmergency Contact', data.emergencyContact || '', '關係\nRelationship', data.relationship || '', LABEL_BG, FONT_SIZE);
-  addTableRow4(t1, '緊急聯絡電話\nEmergency Phone', data.emergencyPhone || '', '電子信箱\nEmail', data.email || '無 N/A', LABEL_BG, FONT_SIZE);
+  addTableRow4(t1, '緊急聯絡人\nEmergency', data.emergencyContact || '', '關係\nRelation', data.relationship || '', LABEL_BG, FONT_SIZE);
+  addTableRow4(t1, '緊急電話\nEmg. Phone', data.emergencyPhone || '', '信箱\nEmail', data.email || '無 N/A', LABEL_BG, FONT_SIZE);
 
   // 得知訊息來源
   let sources = [];
@@ -364,18 +364,22 @@ function setCell(cell, bgColor, fontSize, isBold) {
  */
 function addTableRow4(table, label1, value1, label2, value2, labelBg, fontSize) {
   var row = table.appendTableRow();
-  setCell(row.appendTableCell(label1), labelBg, fontSize, true);
+  var c1 = setCell(row.appendTableCell(label1), labelBg, fontSize, true);
+  c1.setWidth(120);
   var v1 = row.appendTableCell(value1);
   v1.setFontSize(fontSize);
   v1.setPaddingTop(6);
   v1.setPaddingBottom(6);
   v1.setPaddingLeft(6);
-  setCell(row.appendTableCell(label2), labelBg, fontSize, true);
+  v1.setWidth(150);
+  var c2 = setCell(row.appendTableCell(label2), labelBg, fontSize, true);
+  c2.setWidth(120);
   var v2 = row.appendTableCell(value2);
   v2.setFontSize(fontSize);
   v2.setPaddingTop(6);
   v2.setPaddingBottom(6);
   v2.setPaddingLeft(6);
+  v2.setWidth(125);
   return row;
 }
 
