@@ -178,9 +178,9 @@ function createSimplePDF(data) {
   var headerRow = headerTable.appendTableRow();
   var headerCell = headerRow.appendTableCell();
   headerCell.setBackgroundColor('#1a5a3e');
-  headerCell.setPaddingTop(14);
-  headerCell.setPaddingBottom(12);
-  headerCell.setPaddingLeft(16);
+  headerCell.setPaddingTop(6);
+  headerCell.setPaddingBottom(6);
+  headerCell.setPaddingLeft(10);
 
   // Logo
   try {
@@ -188,20 +188,20 @@ function createSimplePDF(data) {
     if (logoFiles.hasNext()) {
       var logoBlob = logoFiles.next().getBlob();
       var logoImg = headerCell.appendImage(logoBlob);
-      logoImg.setWidth(45);
-      logoImg.setHeight(45);
+      logoImg.setWidth(36);
+      logoImg.setHeight(36);
     }
   } catch(e) {}
 
   var titlePara = headerCell.appendParagraph('富足診所 GoodLeg Clinic');
-  titlePara.setFontSize(18);
+  titlePara.setFontSize(14);
   titlePara.setBold(true);
   titlePara.setForegroundColor('#ffffff');
-  titlePara.setSpacingBefore(4);
-  titlePara.setSpacingAfter(2);
+  titlePara.setSpacingBefore(0);
+  titlePara.setSpacingAfter(0);
 
   var subtitlePara = headerCell.appendParagraph('初診基本資料表 New Patient Registration Form');
-  subtitlePara.setFontSize(12);
+  subtitlePara.setFontSize(10);
   subtitlePara.setBold(true);
   subtitlePara.setForegroundColor('#c8e6c9');
 
@@ -372,11 +372,13 @@ function addHistoryRow(table, label, checked, fontSize) {
   var row = table.appendTableRow();
   var c1 = row.appendTableCell(label);
   c1.setFontSize(fontSize);
+  c1.setForegroundColor('#333333');
   c1.setPaddingTop(6);
   c1.setPaddingBottom(6);
   c1.setPaddingLeft(6);
   var c2 = row.appendTableCell(checked ? '☑' : '☐');
   c2.setFontSize(14);
+  c2.setForegroundColor(checked ? '#1a5a3e' : '#999999');
   c2.setPaddingTop(6);
   c2.setPaddingBottom(6);
   c2.setPaddingLeft(6);
