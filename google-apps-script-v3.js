@@ -164,7 +164,6 @@ function createSimplePDF(data) {
   const doc = DocumentApp.create('temp_初診單_' + new Date().getTime());
   const body = doc.getBody();
 
-  // 頁面邊距
   body.setMarginTop(36);
   body.setMarginBottom(36);
   body.setMarginLeft(40);
@@ -190,7 +189,7 @@ function createSimplePDF(data) {
 
   body.appendHorizontalRule();
 
-  // ===== 基本資料 =====
+  // ===== 基本資料（2欄表格）=====
   const s1 = body.appendParagraph('基本資料 Basic Information');
   s1.setFontSize(12);
   s1.setBold(true);
@@ -198,35 +197,28 @@ function createSimplePDF(data) {
   s1.setSpacingBefore(10);
   s1.setSpacingAfter(6);
 
-  // 解析性別 - 相容 'male'/'female' 和 '男'/'女' 兩種格式
+  // 解析性別
   let genderText = data.gender || '';
   if (genderText === 'male') genderText = '男 Male';
   else if (genderText === 'female') genderText = '女 Female';
   else if (genderText === '男') genderText = '男 Male';
   else if (genderText === '女') genderText = '女 Female';
 
-  // 4欄表格：基本資料
   const t1 = body.appendTable();
 
-  addTableRow4(t1, '病歷號碼\nRecord No.', data.medicalRecordNumber || '', '填表日期\nDate', data.fillDate || '', LABEL_BG, FONT_SIZE);
-  addTableRow4(t1, '姓名\nName', data.name || '', '性別\nGender', genderText, LABEL_BG, FONT_SIZE);
-  addTableRow4(t1, '出生日期\nDOB', '民國 ' + (data.birthYear || '') + ' 年 ' + (data.birthMonth || '') + ' 月 ' + (data.birthDay || '') + ' 日', '身分證字號\nID No.', data.idNumber || '', LABEL_BG, FONT_SIZE);
-  addTableRow4(t1, '電話（宅）\nHome', data.homePhone || '無 N/A', '手機\nMobile', data.mobilePhone || '', LABEL_BG, FONT_SIZE);
-
-  // 地址：跨3欄
-  var row = t1.appendTableRow();
-  setCell(row.appendTableCell('聯絡地址\nAddress'), LABEL_BG, FONT_SIZE, true);
-  var addrCell = row.appendTableCell(data.address || '');
-  addrCell.setFontSize(FONT_SIZE);
-  addrCell.setPaddingTop(6);
-  addrCell.setPaddingBottom(6);
-  addrCell.setPaddingLeft(6);
-  // 合併後面兩欄（用空白欄位模擬跨欄）
-  row.appendTableCell('').setWidth(0);
-  row.appendTableCell('').setWidth(0);
-
-  addTableRow4(t1, '緊急聯絡人\nEmergency', data.emergencyContact || '', '關係\nRelation', data.relationship || '', LABEL_BG, FONT_SIZE);
-  addTableRow4(t1, '緊急電話\nEmg. Phone', data.emergencyPhone || '', '信箱\nEmail', data.email || '無 N/A', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '病歷號碼 Record No.', data.medicalRecordNumber || '', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '填表日期 Date', data.fillDate || '', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '姓名 Name', data.name || '', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '性別 Gender', genderText, LABEL_BG, FONT_SIZE);
+  addRow2(t1, '出生日期 DOB', '民國 ' + (data.birthYear || '') + ' 年 ' + (data.birthMonth || '') + ' 月 ' + (data.birthDay || '') + ' 日', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '身分證字號 ID No.', data.idNumber || '', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '電話（宅）Home', data.homePhone || '無 N/A', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '手機 Mobile', data.mobilePhone || '', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '聯絡地址 Address', data.address || '', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '緊急聯絡人 Emergency', data.emergencyContact || '', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '與病患關係 Relation', data.relationship || '', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '緊急電話 Emg. Phone', data.emergencyPhone || '', LABEL_BG, FONT_SIZE);
+  addRow2(t1, '電子信箱 Email', data.email || '無 N/A', LABEL_BG, FONT_SIZE);
 
   // 得知訊息來源
   let sources = [];
@@ -241,16 +233,7 @@ function createSimplePDF(data) {
   if (data.referrerName) {
     sourceText += '（介紹人 Referrer：' + data.referrerName + '）';
   }
-
-  row = t1.appendTableRow();
-  setCell(row.appendTableCell('得知本院訊息\nHow did you hear about us?'), LABEL_BG, FONT_SIZE, true);
-  var srcCell = row.appendTableCell(sourceText);
-  srcCell.setFontSize(FONT_SIZE);
-  srcCell.setPaddingTop(6);
-  srcCell.setPaddingBottom(6);
-  srcCell.setPaddingLeft(6);
-  row.appendTableCell('').setWidth(0);
-  row.appendTableCell('').setWidth(0);
+  addRow2(t1, '得知本院訊息 Source', sourceText, LABEL_BG, FONT_SIZE);
 
   body.appendParagraph('');
 
@@ -347,39 +330,22 @@ function createSimplePDF(data) {
 }
 
 /**
- * 設定儲存格格式
+ * 新增 2 欄表格列（標籤 | 值）
  */
-function setCell(cell, bgColor, fontSize, isBold) {
-  if (bgColor) cell.setBackgroundColor(bgColor);
-  cell.setFontSize(fontSize);
-  if (isBold) cell.setBold(true);
-  cell.setPaddingTop(6);
-  cell.setPaddingBottom(6);
-  cell.setPaddingLeft(6);
-  return cell;
-}
-
-/**
- * 新增 4 欄表格列
- */
-function addTableRow4(table, label1, value1, label2, value2, labelBg, fontSize) {
+function addRow2(table, label, value, labelBg, fontSize) {
   var row = table.appendTableRow();
-  var c1 = setCell(row.appendTableCell(label1), labelBg, fontSize, true);
-  c1.setWidth(120);
-  var v1 = row.appendTableCell(value1);
-  v1.setFontSize(fontSize);
-  v1.setPaddingTop(6);
-  v1.setPaddingBottom(6);
-  v1.setPaddingLeft(6);
-  v1.setWidth(150);
-  var c2 = setCell(row.appendTableCell(label2), labelBg, fontSize, true);
-  c2.setWidth(120);
-  var v2 = row.appendTableCell(value2);
-  v2.setFontSize(fontSize);
-  v2.setPaddingTop(6);
-  v2.setPaddingBottom(6);
-  v2.setPaddingLeft(6);
-  v2.setWidth(125);
+  var c1 = row.appendTableCell(label);
+  c1.setBackgroundColor(labelBg);
+  c1.setFontSize(fontSize);
+  c1.setBold(true);
+  c1.setPaddingTop(5);
+  c1.setPaddingBottom(5);
+  c1.setPaddingLeft(8);
+  var c2 = row.appendTableCell(value);
+  c2.setFontSize(fontSize);
+  c2.setPaddingTop(5);
+  c2.setPaddingBottom(5);
+  c2.setPaddingLeft(8);
   return row;
 }
 
