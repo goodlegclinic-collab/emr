@@ -164,8 +164,8 @@ function createSimplePDF(data) {
   const doc = DocumentApp.create('temp_初診單_' + new Date().getTime());
   const body = doc.getBody();
 
-  body.setMarginTop(36);
-  body.setMarginBottom(36);
+  body.setMarginTop(0);
+  body.setMarginBottom(28);
   body.setMarginLeft(40);
   body.setMarginRight(40);
 
