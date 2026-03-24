@@ -173,45 +173,55 @@ function createSimplePDF(data) {
   const HEADER_BG = '#1a5a3e';
   const FONT_SIZE = 10;
 
-  // ===== 標題（綠底白字）=====
+  // ===== 標題（綠底白字，Logo+文字同一行）=====
   const headerTable = body.appendTable();
-  var headerRow = headerTable.appendTableRow();
-  var headerCell = headerRow.appendTableCell();
-  headerCell.setBackgroundColor('#1a5a3e');
-  headerCell.setPaddingTop(6);
-  headerCell.setPaddingBottom(6);
-  headerCell.setPaddingLeft(10);
+  var hRow = headerTable.appendTableRow();
 
-  // Logo
+  // Logo 欄
+  var logoCell = hRow.appendTableCell();
+  logoCell.setBackgroundColor('#1a5a3e');
+  logoCell.setPaddingTop(4);
+  logoCell.setPaddingBottom(4);
+  logoCell.setPaddingLeft(8);
+  logoCell.setWidth(45);
   try {
     var logoFiles = DriveApp.getFilesByName('富足LOGO.png');
     if (logoFiles.hasNext()) {
       var logoBlob = logoFiles.next().getBlob();
-      var logoImg = headerCell.appendImage(logoBlob);
-      logoImg.setWidth(36);
-      logoImg.setHeight(36);
+      var logoImg = logoCell.appendImage(logoBlob);
+      logoImg.setWidth(30);
+      logoImg.setHeight(30);
     }
   } catch(e) {}
 
-  var titlePara = headerCell.appendParagraph('富足診所 GoodLeg Clinic');
-  titlePara.setFontSize(14);
+  // 文字欄
+  var textCell = hRow.appendTableCell();
+  textCell.setBackgroundColor('#1a5a3e');
+  textCell.setPaddingTop(4);
+  textCell.setPaddingBottom(4);
+  textCell.setPaddingLeft(4);
+
+  var titlePara = textCell.appendParagraph('富足診所 GoodLeg Clinic');
+  titlePara.setFontSize(13);
   titlePara.setBold(true);
   titlePara.setForegroundColor('#ffffff');
   titlePara.setSpacingBefore(0);
   titlePara.setSpacingAfter(0);
 
-  var subtitlePara = headerCell.appendParagraph('初診基本資料表 New Patient Registration Form');
-  subtitlePara.setFontSize(10);
+  var subtitlePara = textCell.appendParagraph('初診基本資料表 New Patient Registration Form');
+  subtitlePara.setFontSize(9);
   subtitlePara.setBold(true);
   subtitlePara.setForegroundColor('#c8e6c9');
+  subtitlePara.setSpacingBefore(0);
+  subtitlePara.setSpacingAfter(0);
 
   // ===== 基本資料（2欄表格）=====
   const s1 = body.appendParagraph('基本資料 Basic Information');
-  s1.setFontSize(12);
+  s1.setFontSize(10);
   s1.setBold(true);
   s1.setForegroundColor('#1a5a3e');
-  s1.setSpacingBefore(10);
-  s1.setSpacingAfter(6);
+  s1.setSpacingBefore(6);
+  s1.setSpacingAfter(2);
 
   // 解析性別
   let genderText = data.gender || '';
@@ -251,19 +261,18 @@ function createSimplePDF(data) {
   }
   addRow2(t1, '得知本院訊息 Source', sourceText, LABEL_BG, FONT_SIZE);
 
-  body.appendParagraph('');
-
   // ===== 家族病史 =====
   const s2 = body.appendParagraph('家族病史 Family Medical History');
-  s2.setFontSize(12);
+  s2.setFontSize(10);
   s2.setBold(true);
   s2.setForegroundColor('#1a5a3e');
-  s2.setSpacingAfter(6);
+  s2.setSpacingBefore(6);
+  s2.setSpacingAfter(2);
 
   const desc = body.appendParagraph('直系血親是否曾罹患以下疾病？ Has any immediate family been diagnosed with the following?');
-  desc.setFontSize(9);
+  desc.setFontSize(8);
   desc.setForegroundColor('#666666');
-  desc.setSpacingAfter(6);
+  desc.setSpacingAfter(2);
 
   const fh = data.familyHistory || {};
 
@@ -275,16 +284,16 @@ function createSimplePDF(data) {
   h1.setFontSize(FONT_SIZE);
   h1.setBold(true);
   h1.setForegroundColor('#ffffff');
-  h1.setPaddingTop(6);
-  h1.setPaddingBottom(6);
+  h1.setPaddingTop(3);
+  h1.setPaddingBottom(3);
   h1.setPaddingLeft(6);
   var h2 = headerRow.appendTableCell('勾選');
   h2.setBackgroundColor(HEADER_BG);
   h2.setFontSize(FONT_SIZE);
   h2.setBold(true);
   h2.setForegroundColor('#ffffff');
-  h2.setPaddingTop(6);
-  h2.setPaddingBottom(6);
+  h2.setPaddingTop(3);
+  h2.setPaddingBottom(3);
   h2.setPaddingLeft(6);
   h2.setWidth(50);
 
@@ -310,21 +319,20 @@ function createSimplePDF(data) {
   }
 
   // ===== 簽名 =====
-  body.appendParagraph('');
-
   const s3 = body.appendParagraph('病人簽名 Patient Signature');
-  s3.setFontSize(12);
+  s3.setFontSize(10);
   s3.setBold(true);
   s3.setForegroundColor('#1a5a3e');
-  s3.setSpacingAfter(8);
+  s3.setSpacingBefore(6);
+  s3.setSpacingAfter(2);
 
   if (data.signature) {
     try {
       const signatureData = data.signature.replace(/^data:image\/\w+;base64,/, '');
       const signatureBlob = Utilities.newBlob(Utilities.base64Decode(signatureData), 'image/png', 'signature.png');
       const img = body.appendImage(signatureBlob);
-      img.setWidth(250);
-      img.setHeight(100);
+      img.setWidth(180);
+      img.setHeight(60);
     } catch (e) {
       body.appendParagraph('（簽名圖片載入失敗 Signature failed to load）');
     }
@@ -332,7 +340,6 @@ function createSimplePDF(data) {
     body.appendParagraph('（未簽名 No signature）');
   }
 
-  body.appendParagraph('');
   const dateLine = body.appendParagraph('填表日期 Date：' + (data.fillDate || getTodayString()));
   dateLine.setFontSize(FONT_SIZE);
   dateLine.setForegroundColor('#666666');
@@ -354,14 +361,14 @@ function addRow2(table, label, value, labelBg, fontSize) {
   c1.setBackgroundColor(labelBg);
   c1.setFontSize(fontSize);
   c1.setBold(true);
-  c1.setPaddingTop(5);
-  c1.setPaddingBottom(5);
-  c1.setPaddingLeft(8);
+  c1.setPaddingTop(3);
+  c1.setPaddingBottom(3);
+  c1.setPaddingLeft(6);
   var c2 = row.appendTableCell(value);
   c2.setFontSize(fontSize);
-  c2.setPaddingTop(5);
-  c2.setPaddingBottom(5);
-  c2.setPaddingLeft(8);
+  c2.setPaddingTop(3);
+  c2.setPaddingBottom(3);
+  c2.setPaddingLeft(6);
   return row;
 }
 
@@ -373,14 +380,14 @@ function addHistoryRow(table, label, checked, fontSize) {
   var c1 = row.appendTableCell(label);
   c1.setFontSize(fontSize);
   c1.setForegroundColor('#333333');
-  c1.setPaddingTop(6);
-  c1.setPaddingBottom(6);
+  c1.setPaddingTop(3);
+  c1.setPaddingBottom(3);
   c1.setPaddingLeft(6);
   var c2 = row.appendTableCell(checked ? '☑' : '☐');
-  c2.setFontSize(14);
+  c2.setFontSize(12);
   c2.setForegroundColor(checked ? '#1a5a3e' : '#999999');
-  c2.setPaddingTop(6);
-  c2.setPaddingBottom(6);
+  c2.setPaddingTop(3);
+  c2.setPaddingBottom(3);
   c2.setPaddingLeft(6);
   if (checked) {
     c2.setForegroundColor('#1a5a3e');
