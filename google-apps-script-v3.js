@@ -164,38 +164,38 @@ function createSimplePDF(data) {
   const doc = DocumentApp.create('temp_初診單_' + new Date().getTime());
   const body = doc.getBody();
 
-  body.setMarginTop(36);
-  body.setMarginBottom(36);
-  body.setMarginLeft(40);
-  body.setMarginRight(40);
+  body.setMarginTop(28);
+  body.setMarginBottom(28);
+  body.setMarginLeft(36);
+  body.setMarginRight(36);
 
   const LABEL_BG = '#e8e8e8';
   const HEADER_BG = '#1a5a3e';
-  const FONT_SIZE = 10;
+  const FONT_SIZE = 9;
 
   // ===== 標題 =====
   const title = body.appendParagraph('富足診所 GoodLeg Clinic');
   title.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
-  title.setFontSize(18);
+  title.setFontSize(16);
   title.setBold(true);
   title.setForegroundColor('#1a5a3e');
-  title.setSpacingAfter(4);
+  title.setSpacingAfter(2);
 
   const subtitle = body.appendParagraph('初診基本資料表 New Patient Registration Form');
   subtitle.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
-  subtitle.setFontSize(13);
+  subtitle.setFontSize(11);
   subtitle.setBold(true);
-  subtitle.setSpacingAfter(12);
+  subtitle.setSpacingAfter(6);
 
   body.appendHorizontalRule();
 
   // ===== 基本資料（2欄表格）=====
   const s1 = body.appendParagraph('基本資料 Basic Information');
-  s1.setFontSize(12);
+  s1.setFontSize(11);
   s1.setBold(true);
   s1.setForegroundColor('#1a5a3e');
-  s1.setSpacingBefore(10);
-  s1.setSpacingAfter(6);
+  s1.setSpacingBefore(4);
+  s1.setSpacingAfter(3);
 
   // 解析性別
   let genderText = data.gender || '';
@@ -235,19 +235,18 @@ function createSimplePDF(data) {
   }
   addRow2(t1, '得知本院訊息 Source', sourceText, LABEL_BG, FONT_SIZE);
 
-  body.appendParagraph('');
-
   // ===== 家族病史 =====
   const s2 = body.appendParagraph('家族病史 Family Medical History');
-  s2.setFontSize(12);
+  s2.setFontSize(11);
   s2.setBold(true);
   s2.setForegroundColor('#1a5a3e');
-  s2.setSpacingAfter(6);
+  s2.setSpacingBefore(6);
+  s2.setSpacingAfter(3);
 
   const desc = body.appendParagraph('直系血親是否曾罹患以下疾病？ Has any immediate family been diagnosed with the following?');
-  desc.setFontSize(9);
+  desc.setFontSize(8);
   desc.setForegroundColor('#666666');
-  desc.setSpacingAfter(6);
+  desc.setSpacingAfter(3);
 
   const fh = data.familyHistory || {};
 
@@ -259,23 +258,23 @@ function createSimplePDF(data) {
   h1.setFontSize(FONT_SIZE);
   h1.setBold(true);
   h1.setForegroundColor('#ffffff');
-  h1.setPaddingTop(6);
-  h1.setPaddingBottom(6);
+  h1.setPaddingTop(3);
+  h1.setPaddingBottom(3);
   h1.setPaddingLeft(6);
-  var h2 = headerRow.appendTableCell('勾選 Status');
+  var h2 = headerRow.appendTableCell('勾選');
   h2.setBackgroundColor(HEADER_BG);
   h2.setFontSize(FONT_SIZE);
   h2.setBold(true);
   h2.setForegroundColor('#ffffff');
-  h2.setPaddingTop(6);
-  h2.setPaddingBottom(6);
+  h2.setPaddingTop(3);
+  h2.setPaddingBottom(3);
   h2.setPaddingLeft(6);
-  h2.setWidth(80);
+  h2.setWidth(50);
 
-  addHistoryRow(t2, '中風、心肌梗塞等心血管疾病\nStroke, heart attack, cardiovascular diseases', fh.cardiovascular, FONT_SIZE);
-  addHistoryRow(t2, '高血壓、糖尿病、高血脂等代謝疾病\nHypertension, diabetes, metabolic diseases', fh.metabolic, FONT_SIZE);
-  addHistoryRow(t2, '癌症等惡性疾病\nCancer or malignant diseases', fh.cancer, FONT_SIZE);
-  addHistoryRow(t2, '其他（自體免疫疾病、重大傷病等）\nOther (autoimmune, major injuries, etc.)', fh.other, FONT_SIZE);
+  addHistoryRow(t2, '中風、心肌梗塞等心血管疾病 Cardiovascular', fh.cardiovascular, FONT_SIZE);
+  addHistoryRow(t2, '高血壓、糖尿病、高血脂等代謝疾病 Metabolic', fh.metabolic, FONT_SIZE);
+  addHistoryRow(t2, '癌症等惡性疾病 Cancer', fh.cancer, FONT_SIZE);
+  addHistoryRow(t2, '其他（自體免疫疾病、重大傷病等）Other', fh.other, FONT_SIZE);
 
   if (data.familyHistoryOther) {
     var otherRow = t2.appendTableRow();
@@ -293,22 +292,21 @@ function createSimplePDF(data) {
     otherVal.setPaddingLeft(6);
   }
 
-  body.appendParagraph('');
-
   // ===== 簽名 =====
   const s3 = body.appendParagraph('病人簽名 Patient Signature');
-  s3.setFontSize(12);
+  s3.setFontSize(11);
   s3.setBold(true);
   s3.setForegroundColor('#1a5a3e');
-  s3.setSpacingAfter(8);
+  s3.setSpacingBefore(6);
+  s3.setSpacingAfter(4);
 
   if (data.signature) {
     try {
       const signatureData = data.signature.replace(/^data:image\/\w+;base64,/, '');
       const signatureBlob = Utilities.newBlob(Utilities.base64Decode(signatureData), 'image/png', 'signature.png');
       const img = body.appendImage(signatureBlob);
-      img.setWidth(250);
-      img.setHeight(100);
+      img.setWidth(200);
+      img.setHeight(70);
     } catch (e) {
       body.appendParagraph('（簽名圖片載入失敗 Signature failed to load）');
     }
@@ -316,7 +314,6 @@ function createSimplePDF(data) {
     body.appendParagraph('（未簽名 No signature）');
   }
 
-  body.appendParagraph('');
   const dateLine = body.appendParagraph('填表日期 Date：' + (data.fillDate || getTodayString()));
   dateLine.setFontSize(FONT_SIZE);
   dateLine.setForegroundColor('#666666');
@@ -338,14 +335,14 @@ function addRow2(table, label, value, labelBg, fontSize) {
   c1.setBackgroundColor(labelBg);
   c1.setFontSize(fontSize);
   c1.setBold(true);
-  c1.setPaddingTop(5);
-  c1.setPaddingBottom(5);
-  c1.setPaddingLeft(8);
+  c1.setPaddingTop(3);
+  c1.setPaddingBottom(3);
+  c1.setPaddingLeft(6);
   var c2 = row.appendTableCell(value);
   c2.setFontSize(fontSize);
-  c2.setPaddingTop(5);
-  c2.setPaddingBottom(5);
-  c2.setPaddingLeft(8);
+  c2.setPaddingTop(3);
+  c2.setPaddingBottom(3);
+  c2.setPaddingLeft(6);
   return row;
 }
 
@@ -356,13 +353,13 @@ function addHistoryRow(table, label, checked, fontSize) {
   var row = table.appendTableRow();
   var c1 = row.appendTableCell(label);
   c1.setFontSize(fontSize);
-  c1.setPaddingTop(6);
-  c1.setPaddingBottom(6);
+  c1.setPaddingTop(3);
+  c1.setPaddingBottom(3);
   c1.setPaddingLeft(6);
   var c2 = row.appendTableCell(checked ? '☑' : '☐');
-  c2.setFontSize(14);
-  c2.setPaddingTop(6);
-  c2.setPaddingBottom(6);
+  c2.setFontSize(12);
+  c2.setPaddingTop(3);
+  c2.setPaddingBottom(3);
   c2.setPaddingLeft(6);
   if (checked) {
     c2.setForegroundColor('#1a5a3e');
