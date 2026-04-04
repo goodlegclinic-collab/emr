@@ -7,12 +7,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>初診基本資料表 - 富足診所</title>
     <link rel="stylesheet" href="style.css">
-    <script>
-        // 檢查是否已登入
-        if (sessionStorage.getItem('authenticated') !== 'true') {
-            window.location.href = 'login.html';
-        }
-    </script>
 </head>
 <body>
     <div class="container">
@@ -238,17 +232,6 @@
                             <input type="text" name="ph_other_detail" class="history-detail" placeholder="請說明 Details">
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <!-- 簽名區 -->
-            <section class="section signature-section">
-                <h2>病人簽名<span class="en">Patient Signature</span></h2>
-                <p class="section-desc">請在下方框內簽名<br><span class="en">Please sign in the box below</span></p>
-
-                <div class="signature-container">
-                    <canvas id="signatureCanvas"></canvas>
-                    <button type="button" id="clearSignature" class="btn btn-secondary">清除簽名 Clear</button>
                 </div>
             </section>
 

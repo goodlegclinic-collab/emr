@@ -10,38 +10,19 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTdv5lVPIfUi
 const KIT_FORM_ID = '8736032';
 const KIT_API_SECRET = 'jCtH74KLLlWw7nMjmLQnFTB-FBNVKJAcO7mI6EeXcgA';
 
-// 全域變數
-let signaturePad;
-
 /**
  * 頁面載入完成
  */
 document.addEventListener('DOMContentLoaded', function() {
-    // 初始化簽名板
-    const canvas = document.getElementById('signatureCanvas');
-    signaturePad = new SignaturePad(canvas);
-    
-    // 清除簽名按鈕
-    document.getElementById('clearSignature').addEventListener('click', function() {
-        signaturePad.clear();
-    });
-    
     // 設定今天日期
     setTodayDate();
-    
+
     // 表單送出
     document.getElementById('patientForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        // 檢查簽名
-        if (signaturePad.isEmpty()) {
-            alert('請簽名 Please sign');
-            return;
-        }
-        
         submitForm();
     });
-    
+
     // 新病人按鈕
     document.getElementById('newPatient').addEventListener('click', resetForm);
 });
@@ -114,11 +95,6 @@ function collectFormData() {
         otherDetail: formData.get('ph_other_detail') || ''
     };
     
-    // 簽名
-    if (!signaturePad.isEmpty()) {
-        data.signature = signaturePad.toDataURL();
-    }
-    
     return data;
 }
 
@@ -142,12 +118,6 @@ function showPreview() {
     const form = document.getElementById('patientForm');
     if (!form.checkValidity()) {
         form.reportValidity();
-        return;
-    }
-    
-    // 檢查簽名
-    if (signaturePad.isEmpty()) {
-        alert('請簽名');
         return;
     }
     
@@ -184,10 +154,6 @@ function showPreview() {
             </ul>
         </div>
 
-        <div class="preview-section">
-            <h3>病人簽名 Patient Signature</h3>
-            <img src="${data.signature}" alt="簽名 Signature" style="max-width: 300px; border: 1px solid #ccc;">
-        </div>
     `;
     
     // 顯示 Modal
@@ -250,7 +216,6 @@ async function submitForm() {
 function resetForm() {
     document.getElementById('successModal').classList.remove('active');
     document.getElementById('patientForm').reset();
-    signaturePad.clear();
     setTodayDate();
     
     // 滾動到頂部
