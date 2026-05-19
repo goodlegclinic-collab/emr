@@ -288,11 +288,21 @@
                             <p>去識別化後用於衛教文章、社群、官網等對外宣傳。<span class="en">De-identified, for articles, social media, and website.</span></p>
                         </li>
                     </ol>
-                    <label class="checkbox-label large">
-                        <input type="checkbox" name="consent_image" value="同意">
-                        <span class="checkbox-custom"></span>
-                        本人同意上述病灶處影像之使用方式（未勾選即視為不同意，且不影響應得之醫療權益）<span class="en">I consent to the above uses of lesion-site images (unchecked = not consented; does not affect medical care)</span>
-                    </label>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>本人就上述病灶處影像之使用方式 <span class="required">*</span><span class="en">My decision on the above uses of lesion-site images</span></label>
+                        <div class="radio-group horizontal">
+                            <label class="radio-label">
+                                <input type="radio" name="consent_image" value="同意" required>
+                                <span class="radio-custom"></span>
+                                同意 <span class="en">Consent</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="consent_image" value="不同意" required>
+                                <span class="radio-custom"></span>
+                                不同意 <span class="en">Decline</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </section>
 
