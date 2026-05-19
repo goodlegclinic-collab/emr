@@ -28,7 +28,12 @@ function doPost(e) {
     
     // 寫入 Google Sheets 統計
     writeToSheet(data);
-    
+
+    // 電子報訂閱（密鑰存於 Script Properties，不放前端、不入程式碼檔）
+    if (data.email) {
+      subscribeNewsletter(data.email, data.name);
+    }
+
     return ContentService.createTextOutput(JSON.stringify({
       success: true,
       message: '儲存成功',
@@ -54,6 +59,37 @@ function doGet(e) {
 }
 
 /**
+ * 訂閱 ConvertKit (Kit) 電子報
+ * 密鑰來自 Script Properties：KIT_FORM_ID、KIT_API_SECRET
+ * 設定方式：Apps Script 編輯器 → 專案設定 → 指令碼屬性 → 新增上述兩個鍵
+ * 訂閱失敗不影響病歷儲存主流程。
+ */
+function subscribeNewsletter(email, name) {
+  try {
+    const props = PropertiesService.getScriptProperties();
+    const formId = props.getProperty('KIT_FORM_ID');
+    const apiSecret = props.getProperty('KIT_API_SECRET');
+    if (!formId || !apiSecret) {
+      Logger.log('略過電子報訂閱：未設定 KIT_FORM_ID / KIT_API_SECRET');
+      return;
+    }
+    UrlFetchApp.fetch('https://api.convertkit.com/v3/forms/' + formId + '/subscribe', {
+      method: 'post',
+      contentType: 'application/json',
+      muteHttpExceptions: true,
+      payload: JSON.stringify({
+        api_secret: apiSecret,
+        email: email,
+        first_name: name || ''
+      })
+    });
+    Logger.log('已送出電子報訂閱：' + email);
+  } catch (err) {
+    Logger.log('電子報訂閱失敗：' + err);
+  }
+}
+
+/**
  * 寫入 Google Sheets
  */
 function writeToSheet(data) {
@@ -65,12 +101,13 @@ function writeToSheet(data) {
     sheet = ss.insertSheet('初診資料');
     sheet.appendRow([
       '病歷號碼', '填表日期', '姓名', '性別', '出生日期', '身分證字號',
-      '手機', '地址', '緊急聯絡人', 
+      '手機', '地址', '緊急聯絡人',
       'Facebook', 'IG', '診所網站', '親友介紹', 'Google搜尋',
-      '介紹人', '建檔時間'
+      '介紹人', '建檔時間',
+      '監視錄影設備同意', '病灶影像使用同意'
     ]);
     // 設定標題列格式
-    sheet.getRange(1, 1, 1, 16).setFontWeight('bold').setBackground('#4a7c59').setFontColor('white');
+    sheet.getRange(1, 1, 1, 18).setFontWeight('bold').setBackground('#4a7c59').setFontColor('white');
     sheet.setFrozenRows(1);
   }
   
@@ -94,7 +131,9 @@ function writeToSheet(data) {
     sources.friendRefer ? '✓' : '',
     sources.google ? '✓' : '',
     data.referrerName || '',
-    new Date().toLocaleString('zh-TW', {timeZone: 'Asia/Taipei'})
+    new Date().toLocaleString('zh-TW', {timeZone: 'Asia/Taipei'}),
+    (data.cctv && data.cctv.acknowledged) ? '已知悉' : '',
+    (data.imageConsent && data.imageConsent.agreed) ? '同意' : '不同意'
   ]);
 }
 
@@ -297,6 +336,39 @@ function createSimplePDF(data) {
   addHistoryRow2(t2, '藥物過敏 Drug allergy', ph.drugAllergy, ph.drugAllergyDetail || '', 9);
   addHistoryRow2(t2, '其他 Other', ph.other, ph.otherDetail || '', 9);
 
+  // ===== 告知說明書 =====
+  const s25 = body.appendParagraph('告知說明書 Notice & Consent');
+  s25.setFontSize(10);
+  s25.setBold(true);
+  s25.setForegroundColor('#1a5a3e');
+  s25.setSpacingBefore(6);
+  s25.setSpacingAfter(2);
+
+  const cctv = data.cctv || {};
+  const ic = data.imageConsent || {};
+
+  const t3 = body.appendTable();
+  var headerRow3 = t3.appendTableRow();
+  var hc1 = headerRow3.appendTableCell('項目 Item');
+  hc1.setBackgroundColor(HEADER_BG);
+  hc1.setFontSize(9);
+  hc1.setBold(true);
+  hc1.setForegroundColor('#ffffff');
+  hc1.setPaddingTop(2);
+  hc1.setPaddingBottom(2);
+  hc1.setPaddingLeft(6);
+  var hc2 = headerRow3.appendTableCell('結果 Result');
+  hc2.setBackgroundColor(HEADER_BG);
+  hc2.setFontSize(9);
+  hc2.setBold(true);
+  hc2.setForegroundColor('#ffffff');
+  hc2.setPaddingTop(2);
+  hc2.setPaddingBottom(2);
+  hc2.setPaddingLeft(6);
+
+  addConsentRow(t3, '監視錄影設備說明與同意 CCTV Equipment', cctv.acknowledged ? '已知悉同意 Consented' : '未確認 Not consented', cctv.acknowledged, 9);
+  addConsentRow(t3, '病灶處影像使用同意（病歷醫療/研究教學/衛教宣傳） Image use', ic.agreed ? '同意 Consent' : '不同意 Decline', ic.agreed, 9);
+
   // ===== 簽名 =====
   const s3 = body.appendParagraph('病人簽名 Patient Signature');
   s3.setFontSize(10);
@@ -367,6 +439,27 @@ function addHistoryRow2(table, label, isYes, detail, fontSize) {
   var c2 = row.appendTableCell(answerText);
   c2.setFontSize(fontSize);
   c2.setForegroundColor(isYes ? '#c0392b' : '#333333');
+  c2.setPaddingTop(2);
+  c2.setPaddingBottom(2);
+  c2.setPaddingLeft(6);
+  if (isYes) c2.setBold(true);
+  return row;
+}
+
+/**
+ * 新增告知說明書列（同意=綠、不同意/未確認=灰）
+ */
+function addConsentRow(table, label, resultText, isYes, fontSize) {
+  var row = table.appendTableRow();
+  var c1 = row.appendTableCell(label);
+  c1.setFontSize(fontSize);
+  c1.setForegroundColor('#333333');
+  c1.setPaddingTop(2);
+  c1.setPaddingBottom(2);
+  c1.setPaddingLeft(6);
+  var c2 = row.appendTableCell(resultText);
+  c2.setFontSize(fontSize);
+  c2.setForegroundColor(isYes ? '#1a5a3e' : '#999999');
   c2.setPaddingTop(2);
   c2.setPaddingBottom(2);
   c2.setPaddingLeft(6);

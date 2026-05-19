@@ -6,10 +6,6 @@
 // Google Apps Script 網址
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTdv5lVPIfUi-9Du8k-sK8_YXeKJJTbiPoCHS2Z-WcV6f4E1tWim-0abmVu2tgFkfxGA/exec';
 
-// ConvertKit (Kit) 電子報訂閱
-const KIT_FORM_ID = '8736032';
-const KIT_API_SECRET = 'jCtH74KLLlWw7nMjmLQnFTB-FBNVKJAcO7mI6EeXcgA';
-
 /**
  * 頁面載入完成
  */
@@ -94,7 +90,15 @@ function collectFormData() {
         other: formData.get('ph_other') === '是',
         otherDetail: formData.get('ph_other_detail') || ''
     };
-    
+
+    // 監視錄影告知
+    data.cctv = {
+        acknowledged: formData.get('cctv_ack') === '已知悉'
+    };
+    data.imageConsent = {
+        agreed: formData.get('consent_image') === '同意'
+    };
+
     return data;
 }
 
@@ -154,6 +158,20 @@ function showPreview() {
             </ul>
         </div>
 
+        <div class="preview-section">
+            <h3>監視錄影告知 CCTV Notice</h3>
+            <ul class="preview-list">
+                <li>監視錄影告知：${data.cctv.acknowledged ? '已知悉並了解' : '未確認'}</li>
+            </ul>
+        </div>
+
+        <div class="preview-section">
+            <h3>病灶處影像使用同意 Image Use Consent</h3>
+            <ul class="preview-list">
+                <li>病灶處影像使用（病歷醫療／研究教學／衛教宣傳）：${data.imageConsent.agreed ? '同意' : '不同意'}</li>
+            </ul>
+        </div>
+
     `;
     
     // 顯示 Modal
@@ -191,11 +209,7 @@ async function submitForm() {
         });
         
         // 因為 no-cors，無法讀取回應，假設成功
-
-        // 如果有填 email，自動訂閱電子報
-        if (data.email) {
-            subscribeToNewsletter(data.email, data.name);
-        }
+        // 電子報訂閱由後端 GAS 處理（密鑰不放前端）
 
         // 顯示成功畫面
         document.getElementById('successModal').classList.add('active');
@@ -222,23 +236,3 @@ function resetForm() {
     window.scrollTo(0, 0);
 }
 
-/**
- * 訂閱 Kit (ConvertKit) 電子報
- */
-async function subscribeToNewsletter(email, name) {
-    try {
-        await fetch(`https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                api_secret: KIT_API_SECRET,
-                email: email,
-                first_name: name || ''
-            })
-        });
-        console.log('Newsletter subscribed:', email);
-    } catch (error) {
-        // 訂閱失敗不影響主流程
-        console.error('Newsletter subscribe error:', error);
-    }
-}

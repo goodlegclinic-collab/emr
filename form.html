@@ -235,6 +235,67 @@
                 </div>
             </section>
 
+            <!-- 告知說明書區 -->
+            <section class="section">
+                <h2>告知說明書<span class="en">Notice & Consent</span></h2>
+
+                <!-- 一、監視錄影告知 -->
+                <div class="consent-block">
+                    <h3 class="consent-title">一、監視錄影設備說明與同意書<span class="en">CCTV Equipment Notice & Consent</span></h3>
+                    <p class="consent-text">
+                        本診所於下列空間裝設有攝影監視錄影設備：
+                        <br><span class="en">CCTV recording equipment is installed in the following areas:</span>
+                    </p>
+                    <ol class="consent-list">
+                        <li>
+                            <strong>公共空間</strong><span class="en">Public areas</span>
+                            <p>包括前臺、走道等。<span class="en">Including reception, hallways, etc.</span></p>
+                        </li>
+                        <li>
+                            <strong>診間治療室內</strong><span class="en">Consultation / treatment room</span>
+                            <p>攝影鏡頭針對門口，不會拍到私密部位，此設備係供維護病人安全與教學使用。<span class="en">The camera faces the doorway and does not capture private body parts; this equipment is used to safeguard patient safety and for teaching purposes.</span></p>
+                        </li>
+                        <li>
+                            <strong>更衣室與洗手間</strong><span class="en">Changing room & restroom</span>
+                            <p>皆無安裝攝影設備。<span class="en">No recording equipment is installed.</span></p>
+                        </li>
+                    </ol>
+                    <label class="checkbox-label large">
+                        <input type="checkbox" name="cctv_ack" value="已知悉" required>
+                        <span class="checkbox-custom"></span>
+                        本人已知悉同意上述監視錄影設備之使用方式。 <span class="required">*</span><span class="en">I acknowledge and consent to the above use of the CCTV equipment.</span>
+                    </label>
+                </div>
+
+                <!-- 二、病灶處影像使用同意 -->
+                <div class="consent-block">
+                    <h3 class="consent-title">二、病灶處影像使用同意<span class="en">Consent for Use of Lesion-Site Images</span></h3>
+                    <p class="consent-text">
+                        醫療過程中，醫師可能就病灶部位（不涉及含可辨識身份的臉部）拍攝照片或影像，並就下列用途使用：
+                        <br><span class="en">During care, the physician may photograph the lesion site (excluding the identifiable face) and use the images for the following purposes:</span>
+                    </p>
+                    <ol class="consent-list">
+                        <li>
+                            <strong>病歷紀錄與醫療診治</strong><span class="en">Medical records & treatment</span>
+                            <p>用於病情評估、治療前後對照及病歷存檔。<span class="en">For assessment, before/after comparison, and archiving.</span></p>
+                        </li>
+                        <li>
+                            <strong>院內學術研究與教學</strong><span class="en">Academic research & teaching</span>
+                            <p>去識別化後用於院內教育訓練、學術研究、個案討論。<span class="en">De-identified, for internal training, research, and case discussion.</span></p>
+                        </li>
+                        <li>
+                            <strong>衛教與行銷宣傳</strong><span class="en">Health education & promotion</span>
+                            <p>去識別化後用於衛教文章、社群、官網等對外宣傳。<span class="en">De-identified, for articles, social media, and website.</span></p>
+                        </li>
+                    </ol>
+                    <label class="checkbox-label large">
+                        <input type="checkbox" name="consent_image" value="同意">
+                        <span class="checkbox-custom"></span>
+                        本人同意上述病灶處影像之使用方式（未勾選即視為不同意，且不影響應得之醫療權益）<span class="en">I consent to the above uses of lesion-site images (unchecked = not consented; does not affect medical care)</span>
+                    </label>
+                </div>
+            </section>
+
             <!-- 提交按鈕 -->
             <div class="form-actions">
                 <button type="submit" id="submitBtn" class="btn btn-primary">確認送出<span class="en">Submit</span></button>
